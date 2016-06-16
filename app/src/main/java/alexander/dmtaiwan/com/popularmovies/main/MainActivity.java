@@ -6,22 +6,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.FrameLayout;
 
-import java.util.List;
+import java.io.IOException;
 
 import alexander.dmtaiwan.com.popularmovies.R;
 import alexander.dmtaiwan.com.popularmovies.detail.DetailFragment;
-import alexander.dmtaiwan.com.popularmovies.model.Movie;
-import alexander.dmtaiwan.com.popularmovies.network.ApiService;
+import alexander.dmtaiwan.com.popularmovies.network.HttpClientFactory;
+import alexander.dmtaiwan.com.popularmovies.network.RequestGenerator;
 import butterknife.BindView;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
 
     private boolean mTwoPane;
-    private String baseUrl = "http://api.themoviedb.org";
+    private String baseUrl = "http://api.themoviedb.org/3/movie/popular";
 
     @Nullable
     @BindView(R.id.detail_container)
@@ -32,26 +33,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .build();
-
-        ApiService service = retrofit.create(ApiService.class);
-
-        Call<List<Movie>> movies = service.listMovies("02134457e3479763fd29902a1e1235c3");
-        movies.enqueue(new Callback<List<Movie>>() {
+        Request request = RequestGenerator.get(baseUrl);
+        OkHttpClient client = HttpClientFactory.getClient();
+        client.newCall(request).enqueue(new Callback() {
             @Override
-            public void onResponse(Call<List<Movie>> call, Response<List<Movie>> response) {
-                List<Movie> testList = response.body();
-                Log.i("SIZE", String.valueOf(testList.size()));
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
             }
 
             @Override
-            public void onFailure(Call<List<Movie>> call, Throwable t) {
-                t.printStackTrace();
-
+            public void onResponse(Call call, Response response) throws IOException {
+                Log.i("RESPONSE", "CODE " + response.code());
+                String body = response.body().string();
+                Log.i("RESPONSE", body);
             }
         });
+
         if (mContainer != null) {
             //Container is not null, device is using tablet layout
             mTwoPane = true;

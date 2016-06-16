@@ -11,7 +11,6 @@ public class Movie {
     private String title;
     private String overview;
     private String original_language;
-    private String[] genre_ids;
     private String release_date;
     private String original_title;
     private String vote_count;
@@ -75,13 +74,7 @@ public class Movie {
         this.original_language = original_language;
     }
 
-    public String[] getGenre_ids() {
-        return genre_ids;
-    }
 
-    public void setGenre_ids(String[] genre_ids) {
-        this.genre_ids = genre_ids;
-    }
 
     public String getRelease_date() {
         return release_date;
