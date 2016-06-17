@@ -5,11 +5,14 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import alexander.dmtaiwan.com.popularmovies.R;
@@ -26,27 +29,51 @@ public class MainFragment extends Fragment implements IMainView {
     @BindView(R.id.coordinator_layout)
     CoordinatorLayout mCoordinatorLayout;
 
+    @BindView(R.id.gridview)
+    GridView mGridView;
+
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+
+    private List<Movie> mMovies = new ArrayList<>();
+    private ImageAdapter mAdapter;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, rootView);
-        MainPresenter presenter = new MainPresenter(this);
 
-        //Check if network is available and fetch data.  If not show error.
+        ((AppCompatActivity)getActivity()).setSupportActionBar(mToolbar);
+
+        //Setup the adapter
+        mAdapter = new ImageAdapter(mMovies, getActivity());
+        mGridView.setAdapter(mAdapter);
+
+        //Create presenter and fetch data if network is available
+        //If no network, display error
+        MainPresenter presenter = new MainPresenter(this);
         if (Utilities.isNetworkAvailable(getActivity())) {
             presenter.fetchData("test");
         }else onError(Utilities.ERROR_NETWORK_UNAVAILABLE);
+
 
         return rootView;
     }
 
 
     @Override
-    public void onDataReturned(List<Movie> movies) {
-        for (Movie movie : movies) {
-            Log.i("ID", movie.getOriginal_title());
-        }
+    public void onDataReturned(final List<Movie> movies) {
+        //Set data
+        //Need to run on UI thread since OkHTTP is running in background thread
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mMovies = movies;
+                mAdapter.updateData(movies);
+            }
+        });
+
     }
 
     @Override

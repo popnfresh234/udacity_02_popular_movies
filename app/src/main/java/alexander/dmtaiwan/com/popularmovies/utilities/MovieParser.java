@@ -20,6 +20,8 @@ public class MovieParser {
     private static final String ORIGINAL_TITLE = "original_title";
     private static final String OVERVIEW = "overview";
 
+    private static final String BASE_URL_IMAGE = "https://image.tmdb.org/t/p/w185/";
+
     public static List<Movie> parse(String json) throws JSONException{
         JSONObject object = new JSONObject(json);
         JSONArray results = object.getJSONArray(RESULTS);
@@ -28,7 +30,7 @@ public class MovieParser {
             for(int i =0; i < results.length(); i++) {
                 JSONObject jsonMovie = results.getJSONObject(i);
                 Movie movie = new Movie();
-                movie.setPoster_path(jsonMovie.getString(POSTER_PATH));
+                movie.setPoster_path(BASE_URL_IMAGE + jsonMovie.getString(POSTER_PATH));
                 movie.setId(jsonMovie.getString(ID));
                 movie.setVote_average(jsonMovie.getString(VOTE_AVERAGE));
                 movie.setOriginal_title(jsonMovie.getString(ORIGINAL_TITLE));

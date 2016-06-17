@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Popular Movies</string>
+    <string name="app_name">Alex\'s Popular Movies</string>
 
     <!--Errors-->
     <string name="error_network_unavailable">No network available</string>

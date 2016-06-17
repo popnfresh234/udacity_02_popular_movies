@@ -26,7 +26,6 @@ public class MainInteractor implements IMainInteractor {
 
     private String baseUrl = "http://api.themoviedb.org/3/movie/popular";
     private IMainPresenter mainPresenter;
-
     public MainInteractor(IMainPresenter mainPresenter) {
         this.mainPresenter = mainPresenter;
     }
