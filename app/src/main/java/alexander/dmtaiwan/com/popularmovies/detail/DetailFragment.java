@@ -32,9 +32,16 @@ public class DetailFragment extends Fragment {
     @BindView(R.id.text_title)
     TextView mTitleText;
 
+    @BindView(R.id.text_release)
+    TextView mReleaseDateText;
+
+    @BindView(R.id.text_rating)
+    TextView mRatingText;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         ButterKnife.bind(this, rootView);
 
@@ -42,11 +49,11 @@ public class DetailFragment extends Fragment {
         if (getArguments() != null) {
             mMovie = getArguments().getParcelable(Utilities.EXTRA_MOVIE);
             mTitleText.setText(mMovie.getOriginal_title());
-
+            mReleaseDateText.setText(mMovie.getRelease_date());
+            mRatingText.setText(mMovie.getVote_average());
 
             Picasso.with(getActivity()).load(mMovie.getBackdrop_path()).into(mBackdrop);
             Picasso.with(getActivity()).load(mMovie.getPoster_path()).into(mPoster);
-
 
 
         }

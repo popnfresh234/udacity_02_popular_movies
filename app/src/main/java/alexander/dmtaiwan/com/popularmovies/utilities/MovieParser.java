@@ -20,6 +20,7 @@ public class MovieParser {
     private static final String ORIGINAL_TITLE = "original_title";
     private static final String OVERVIEW = "overview";
     private static final String BACKDROP_PATH = "backdrop_path";
+    private static final String RELEASE_DATE = "release_date";
 
     private static final String BASE_URL_IMAGE = "https://image.tmdb.org/t/p/w185";
     private static final String BASE_URL_BACKDROP_IMAGE = "http://image.tmdb.org/t/p/w500";
@@ -38,6 +39,7 @@ public class MovieParser {
                 movie.setOriginal_title(jsonMovie.getString(ORIGINAL_TITLE));
                 movie.setOverview(jsonMovie.getString(OVERVIEW));
                 movie.setBackdrop_path(BASE_URL_BACKDROP_IMAGE + jsonMovie.getString(BACKDROP_PATH));
+                movie.setRelease_date(jsonMovie.getString(RELEASE_DATE));
                 movieList.add(movie);
             }
         }
