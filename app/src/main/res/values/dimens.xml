@@ -4,6 +4,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="image_view_border">2dp</dimen>
     <dimen name="image_view_margin">16dp</dimen>
+    <dimen name="release_rating_padding">8dp</dimen>
 
     <!--Fonts-->
 

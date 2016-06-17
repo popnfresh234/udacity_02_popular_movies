@@ -19,7 +19,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".detail.DetailActivity"/>
+        <activity android:name=".detail.DetailActivity"
+            android:theme="@style/TransulcentTheme"/>
     </application>
 
 </manifest>

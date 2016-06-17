@@ -38,6 +38,9 @@ public class DetailFragment extends Fragment {
     @BindView(R.id.text_rating)
     TextView mRatingText;
 
+    @BindView(R.id.text_overview)
+    TextView mOverviewText;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -51,6 +54,7 @@ public class DetailFragment extends Fragment {
             mTitleText.setText(mMovie.getOriginal_title());
             mReleaseDateText.setText(mMovie.getRelease_date());
             mRatingText.setText(mMovie.getVote_average());
+            mOverviewText.setText(mMovie.getOverview());
 
             Picasso.with(getActivity()).load(mMovie.getBackdrop_path()).into(mBackdrop);
             Picasso.with(getActivity()).load(mMovie.getPoster_path()).into(mPoster);
