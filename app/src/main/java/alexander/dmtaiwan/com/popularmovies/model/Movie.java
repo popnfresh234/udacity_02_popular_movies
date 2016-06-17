@@ -1,9 +1,12 @@
 package alexander.dmtaiwan.com.popularmovies.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by lenovo on 6/16/2016.
  */
-public class Movie {
+public class Movie implements Parcelable {
     private String vote_average;
     private String backdrop_path;
     private String adult;
@@ -17,6 +20,10 @@ public class Movie {
     private String poster_path;
     private String video;
     private String popularity;
+
+    public Movie() {
+        //Empty constructor
+    }
 
     public String getVote_average() {
         return vote_average;
@@ -75,7 +82,6 @@ public class Movie {
     }
 
 
-
     public String getRelease_date() {
         return release_date;
     }
@@ -123,4 +129,55 @@ public class Movie {
     public void setPopularity(String popularity) {
         this.popularity = popularity;
     }
+
+    protected Movie(Parcel in) {
+        vote_average = in.readString();
+        backdrop_path = in.readString();
+        adult = in.readString();
+        id = in.readString();
+        title = in.readString();
+        overview = in.readString();
+        original_language = in.readString();
+        release_date = in.readString();
+        original_title = in.readString();
+        vote_count = in.readString();
+        poster_path = in.readString();
+        video = in.readString();
+        popularity = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(vote_average);
+        dest.writeString(backdrop_path);
+        dest.writeString(adult);
+        dest.writeString(id);
+        dest.writeString(title);
+        dest.writeString(overview);
+        dest.writeString(original_language);
+        dest.writeString(release_date);
+        dest.writeString(original_title);
+        dest.writeString(vote_count);
+        dest.writeString(poster_path);
+        dest.writeString(video);
+        dest.writeString(popularity);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
 }

@@ -1,5 +1,6 @@
 package alexander.dmtaiwan.com.popularmovies.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -7,7 +8,10 @@ import android.util.Log;
 import android.widget.FrameLayout;
 
 import alexander.dmtaiwan.com.popularmovies.R;
+import alexander.dmtaiwan.com.popularmovies.detail.DetailActivity;
 import alexander.dmtaiwan.com.popularmovies.detail.DetailFragment;
+import alexander.dmtaiwan.com.popularmovies.model.Movie;
+import alexander.dmtaiwan.com.popularmovies.utilities.Utilities;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -51,7 +55,11 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Movi
     }
 
     @Override
-    public void onItemSelected(String id) {
-        Log.i("CLICK", id);
+    public void onItemSelected(Movie movie) {
+        if (!mTwoPane) {
+            Intent intent = new Intent(this, DetailActivity.class);
+            intent.putExtra(Utilities.EXTRA_MOVIE, movie);
+            startActivity(intent);
+        }
     }
 }

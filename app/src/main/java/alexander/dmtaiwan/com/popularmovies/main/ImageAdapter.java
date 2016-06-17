@@ -21,10 +21,12 @@ public class ImageAdapter extends BaseAdapter {
 
     private List<Movie> movies;
     private Context context;
+    private AdapterListener adapterListener;
 
-    public ImageAdapter(List<Movie> movies, Context context) {
+    public ImageAdapter(List<Movie> movies, Context context, AdapterListener adapterListener) {
         this.movies = movies;
         this.context = context;
+        this.adapterListener = adapterListener;
     }
 
     @Override
@@ -43,7 +45,7 @@ public class ImageAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ImageView imageView;
         if (convertView == null) {
@@ -52,12 +54,25 @@ public class ImageAdapter extends BaseAdapter {
 
         //Load images with picasso
         Picasso.with(context).load(movies.get(position).getPoster_path()).into(imageView);
-
+        //Set listener on ImageView to pass Movie back to MainFragment and then MainActivity to handle click
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapterListener.onItemClicked(movies.get(position));
+            }
+        });
         return imageView;
     }
 
     public void updateData(List<Movie> movies) {
+        //Updates list of movies and notifies adapter of new data
         this.movies = movies;
         notifyDataSetChanged();
     }
+
+    //Interface for MainFragment to implement
+    public interface AdapterListener {
+        void onItemClicked(Movie movie);
+    }
+
 }

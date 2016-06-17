@@ -10,7 +10,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.GridView;
 
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ import butterknife.ButterKnife;
 /**
  * Created by lenovo on 6/16/2016.
  */
-public class MainFragment extends Fragment implements IMainView {
+public class MainFragment extends Fragment implements IMainView , ImageAdapter.AdapterListener{
 
     @BindView(R.id.coordinator_layout)
     CoordinatorLayout mCoordinatorLayout;
@@ -55,14 +54,8 @@ public class MainFragment extends Fragment implements IMainView {
         ((AppCompatActivity)getActivity()).setSupportActionBar(mToolbar);
 
         //Setup the adapter
-        mAdapter = new ImageAdapter(mMovies, getActivity());
+        mAdapter = new ImageAdapter(mMovies, getActivity(), this);
         mGridView.setAdapter(mAdapter);
-        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                listener.onItemSelected(mMovies.get(position).getOriginal_title());
-            }
-        });
 
         //Create presenter and fetch data if network is available
         //If no network, display error
@@ -80,14 +73,15 @@ public class MainFragment extends Fragment implements IMainView {
     public void onDataReturned(final List<Movie> movies) {
         //Set data
         //Need to run on UI thread since OkHTTP is running in background thread
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mMovies = movies;
-                mAdapter.updateData(movies);
-            }
-        });
-
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mMovies = movies;
+                    mAdapter.updateData(movies);
+                }
+            });
+        }
     }
 
     @Override
@@ -110,8 +104,15 @@ public class MainFragment extends Fragment implements IMainView {
         snackbar.show();
     }
 
+    @Override
+    public void onItemClicked(Movie movie) {
+        //Handle clicks from the Adapter
+        listener.onItemSelected(movie);
+    }
+
+    //Interface for MainActivity to implement
     public interface MovieListener {
-        void onItemSelected(String id);
+        void onItemSelected(Movie movie);
     }
 
 }

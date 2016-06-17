@@ -41,6 +41,7 @@
         android:columnWidth="130dp"
         android:gravity="center"
         android:numColumns="auto_fit"
-        android:stretchMode="columnWidth" />
+        android:stretchMode="columnWidth"
+/>
 
 </android.support.design.widget.CoordinatorLayout>
