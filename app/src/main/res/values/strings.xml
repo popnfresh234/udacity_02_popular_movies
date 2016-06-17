@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Popular Movies</string>
+
+    <!--Errors-->
+    <string name="error_network_unavailable">No network available</string>
+    <string name="error_network_failed">Something went wrong with the request!</string>
+    <string name="error_json">Something is wrong with the data!</string>
 </resources>

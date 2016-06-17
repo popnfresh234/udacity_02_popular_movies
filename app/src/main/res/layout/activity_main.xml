@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:name="alexander.dmtaiwan.com.popularmovies.main.MainFragment"
@@ -8,3 +9,4 @@
 
 
 </fragment>
+
