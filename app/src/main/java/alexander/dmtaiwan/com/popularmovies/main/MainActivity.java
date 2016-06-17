@@ -11,7 +11,7 @@ import alexander.dmtaiwan.com.popularmovies.detail.DetailFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainFragment.MovieListener {
 
     private boolean mTwoPane;
 
@@ -26,6 +26,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        //Inflate main fragment with MainActivity as listener
+        MainFragment mainFragment = MainFragment.newInstance(this);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.main_container, mainFragment, null)
+                .commit();
 
         if (mContainer != null) {
             //Container is not null, device is using tablet layout
@@ -42,5 +48,10 @@ public class MainActivity extends AppCompatActivity {
             Log.i("SINGLE", "single");
         }
 
+    }
+
+    @Override
+    public void onItemSelected(String id) {
+        Log.i("CLICK", id);
     }
 }

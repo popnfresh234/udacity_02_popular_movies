@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import java.util.ArrayList;
@@ -37,6 +38,13 @@ public class MainFragment extends Fragment implements IMainView {
 
     private List<Movie> mMovies = new ArrayList<>();
     private ImageAdapter mAdapter;
+    private MovieListener listener;
+
+    public static MainFragment newInstance(MovieListener listener) {
+        MainFragment fragment = new MainFragment();
+        fragment.listener = listener;
+        return fragment;
+    }
 
     @Nullable
     @Override
@@ -49,6 +57,12 @@ public class MainFragment extends Fragment implements IMainView {
         //Setup the adapter
         mAdapter = new ImageAdapter(mMovies, getActivity());
         mGridView.setAdapter(mAdapter);
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                listener.onItemSelected(mMovies.get(position).getOriginal_title());
+            }
+        });
 
         //Create presenter and fetch data if network is available
         //If no network, display error
@@ -95,4 +109,9 @@ public class MainFragment extends Fragment implements IMainView {
         }
         snackbar.show();
     }
+
+    public interface MovieListener {
+        void onItemSelected(String id);
+    }
+
 }
