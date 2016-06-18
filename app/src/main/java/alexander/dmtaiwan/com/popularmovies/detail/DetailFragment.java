@@ -5,6 +5,8 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import alexander.dmtaiwan.com.popularmovies.R;
@@ -29,6 +32,7 @@ import butterknife.ButterKnife;
  */
 public class DetailFragment extends Fragment implements IDetailView {
     private Movie mMovie;
+    private VideosAdapter mVideoAdapter;
 
     @BindView(R.id.coordinator_layout)
     CoordinatorLayout mCoordinatorLayout;
@@ -51,6 +55,9 @@ public class DetailFragment extends Fragment implements IDetailView {
     @BindView(R.id.text_overview)
     TextView mOverviewText;
 
+    @BindView(R.id.recycler_view_videos)
+    RecyclerView mRecyclerVideos;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -58,6 +65,13 @@ public class DetailFragment extends Fragment implements IDetailView {
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         ButterKnife.bind(this, rootView);
         DetailsPresenter presenter = new DetailsPresenter(this);
+
+        //setup RecyclerView for videos
+        mVideoAdapter = new VideosAdapter(new ArrayList<Video>(), getActivity());
+        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+        mRecyclerVideos.setLayoutManager(llm);
+        mRecyclerVideos.setAdapter(mVideoAdapter);
+
         //getMovies args
         if (getArguments() != null) {
             mMovie = getArguments().getParcelable(Utilities.EXTRA_MOVIE);
@@ -88,6 +102,7 @@ public class DetailFragment extends Fragment implements IDetailView {
 
     @Override
     public void onVideosReturned(List<Video> videos) {
+        mVideoAdapter.updateData(videos);
         Log.i("YEP", String.valueOf(videos.size()));
     }
 
