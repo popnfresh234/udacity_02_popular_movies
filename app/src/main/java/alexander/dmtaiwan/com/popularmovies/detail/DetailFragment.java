@@ -61,8 +61,12 @@ public class DetailFragment extends Fragment implements IDetailView {
         //getMovies args
         if (getArguments() != null) {
             mMovie = getArguments().getParcelable(Utilities.EXTRA_MOVIE);
-            presenter.fetchData(mMovie.getId(), Utilities.REVIEW_CODE);
-            presenter.fetchData(mMovie.getId(), Utilities.VIDEO_CODE);
+
+            if (savedInstanceState == null) {
+                presenter.fetchData(mMovie.getId(), Utilities.REVIEW_CODE);
+                presenter.fetchData(mMovie.getId(), Utilities.VIDEO_CODE);
+            }
+
             mTitleText.setText(mMovie.getOriginal_title());
             mReleaseDateText.setText(mMovie.getRelease_date());
             mRatingText.setText(mMovie.getVote_average());

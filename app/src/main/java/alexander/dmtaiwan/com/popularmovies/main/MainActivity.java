@@ -31,11 +31,14 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Movi
         ButterKnife.bind(this);
 
         //Inflate main fragment with MainActivity as listener
-        MainFragment mainFragment = MainFragment.newInstance(this);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.main_container, mainFragment, null)
-                .commit();
+        if (savedInstanceState == null) {
+
+            MainFragment mainFragment = MainFragment.newInstance(this);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.main_container, mainFragment, null)
+                    .commit();
+        }
 
         if (mContainer != null) {
             //Container is not null, device is using tablet layout

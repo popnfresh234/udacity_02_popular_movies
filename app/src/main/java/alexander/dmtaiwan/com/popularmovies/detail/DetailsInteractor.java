@@ -1,5 +1,7 @@
 package alexander.dmtaiwan.com.popularmovies.detail;
 
+import android.util.Log;
+
 import org.json.JSONException;
 
 import java.io.IOException;
@@ -58,7 +60,7 @@ public class DetailsInteractor implements IDetailInteractor {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 try {
-
+                    Log.i("CODE", String.valueOf(code));
                     //If fetching videos:
                     if (code == Utilities.VIDEO_CODE) {
                         List<Video> videos = JSONParser.parseVidoes(response.body().string());
@@ -66,10 +68,11 @@ public class DetailsInteractor implements IDetailInteractor {
                     }
 
                     //If fetching reviews:
-                    if (code == Utilities.REVIEW_CODE) {
+                    else if (code == Utilities.REVIEW_CODE) {
                         List<Review> reviews = JSONParser.parseReviews(response.body().string());
                         detailPresenter.onReviewsReturned(reviews);
                     }
+
                     //Otherwise error
                     else detailPresenter.onErrorReturned(Utilities.ERROR_NETWORK_FAILED);
 

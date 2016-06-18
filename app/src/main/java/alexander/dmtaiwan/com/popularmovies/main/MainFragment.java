@@ -35,7 +35,7 @@ public class MainFragment extends Fragment implements IMainView , ImageAdapter.A
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    private List<Movie> mMovies = new ArrayList<>();
+    private List<Movie> mMovies = new ArrayList<Movie>();
     private ImageAdapter mAdapter;
     private MovieListener listener;
 
@@ -53,6 +53,10 @@ public class MainFragment extends Fragment implements IMainView , ImageAdapter.A
 
         ((AppCompatActivity)getActivity()).setSupportActionBar(mToolbar);
 
+        if (savedInstanceState != null) {
+            mMovies = savedInstanceState.getParcelableArrayList("TEST");
+        }
+
         //Setup the adapter
         mAdapter = new ImageAdapter(mMovies, getActivity(), this);
         mGridView.setAdapter(mAdapter);
@@ -61,7 +65,10 @@ public class MainFragment extends Fragment implements IMainView , ImageAdapter.A
         //If no network, display error
         MainPresenter presenter = new MainPresenter(this);
         if (Utilities.isNetworkAvailable(getActivity())) {
-            presenter.fetchData("test");
+            if (savedInstanceState == null) {
+                presenter.fetchData("test");
+            }
+
         }else onError(Utilities.ERROR_NETWORK_UNAVAILABLE);
 
 
@@ -115,4 +122,12 @@ public class MainFragment extends Fragment implements IMainView , ImageAdapter.A
         void onItemSelected(Movie movie);
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        ArrayList<Movie> movies = new ArrayList<>();
+        movies.addAll(mMovies);
+
+        outState.putParcelableArrayList("TEST", movies);
+    }
 }
