@@ -7,6 +7,11 @@ import android.os.Parcelable;
  * Created by Alexander on 6/18/2016.
  */
 public class Review implements Parcelable {
+
+    public Review() {
+        //Empty constructor
+    }
+
     private String content;
 
     private String id;

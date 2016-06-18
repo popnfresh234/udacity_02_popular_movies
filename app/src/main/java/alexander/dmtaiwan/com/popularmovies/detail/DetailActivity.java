@@ -17,7 +17,7 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        //If intent has Movie attached, get it and create fragment
+        //If intent has Movie attached, getMovies it and create fragment
         if (getIntent().getParcelableExtra(Utilities.EXTRA_MOVIE) != null) {
             Movie movie = getIntent().getParcelableExtra(Utilities.EXTRA_MOVIE);
             DetailFragment fragment = new DetailFragment();
