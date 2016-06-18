@@ -1,6 +1,6 @@
 package alexander.dmtaiwan.com.popularmovies.main;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import alexander.dmtaiwan.com.popularmovies.model.Movie;
 
@@ -22,7 +22,7 @@ public class MainPresenter implements IMainPresenter {
     }
 
     @Override
-    public void onDataReturned(List<Movie> movieList) {
+    public void onDataReturned(ArrayList<Movie> movieList) {
         mainView.onDataReturned(movieList);
     }
 

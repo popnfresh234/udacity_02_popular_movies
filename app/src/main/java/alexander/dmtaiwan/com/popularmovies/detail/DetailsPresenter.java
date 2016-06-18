@@ -1,6 +1,6 @@
 package alexander.dmtaiwan.com.popularmovies.detail;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import alexander.dmtaiwan.com.popularmovies.model.Review;
 import alexander.dmtaiwan.com.popularmovies.model.Video;
@@ -31,12 +31,12 @@ public class DetailsPresenter implements IDetailPresenter {
 
 
     @Override
-    public void onReviewsReturned(List<Review> reviews) {
+    public void onReviewsReturned(ArrayList<Review> reviews) {
         detailView.onReviewsReturned(reviews);
     }
 
     @Override
-    public void onVideosReturned(List<Video> videos) {
+    public void onVideosReturned(ArrayList<Video> videos) {
         detailView.onVideosReturned(videos);
     }
 

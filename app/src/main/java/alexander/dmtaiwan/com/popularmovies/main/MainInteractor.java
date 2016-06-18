@@ -5,7 +5,7 @@ import android.util.Log;
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.ArrayList;
 
 import alexander.dmtaiwan.com.popularmovies.model.Movie;
 import alexander.dmtaiwan.com.popularmovies.network.HttpClientFactory;
@@ -44,7 +44,7 @@ public class MainInteractor implements IMainInteractor {
             public void onResponse(Call call, Response response) throws IOException {
                 Log.i("RESPONSE", "CODE " + response.code());
                 try {
-                    List<Movie> movieList = JSONParser.parse(response.body().string());
+                    ArrayList<Movie> movieList = JSONParser.parse(response.body().string());
                     mainPresenter.onDataReturned(movieList);
                 } catch (JSONException e) {
                     e.printStackTrace();

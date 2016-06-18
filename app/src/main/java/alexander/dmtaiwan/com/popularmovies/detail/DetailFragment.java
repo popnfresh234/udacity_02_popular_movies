@@ -12,17 +12,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import alexander.dmtaiwan.com.popularmovies.R;
 import alexander.dmtaiwan.com.popularmovies.model.Movie;
 import alexander.dmtaiwan.com.popularmovies.model.Review;
 import alexander.dmtaiwan.com.popularmovies.model.Video;
+import alexander.dmtaiwan.com.popularmovies.utilities.DividerItemDecoration;
 import alexander.dmtaiwan.com.popularmovies.utilities.Utilities;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,7 +31,14 @@ import butterknife.ButterKnife;
  */
 public class DetailFragment extends Fragment implements IDetailView {
     private Movie mMovie;
-    private VideosAdapter mVideoAdapter;
+    private ArrayList<Video> mVideos = new ArrayList<>();
+    private ArrayList<Review> mReviews = new ArrayList<>();
+
+    private DetailAdapter mAdapter;
+    private DetailsPresenter mPresenter;
+
+    @BindView(R.id.detail_recycler)
+    RecyclerView mRecycler;
 
     @BindView(R.id.coordinator_layout)
     CoordinatorLayout mCoordinatorLayout;
@@ -40,54 +46,37 @@ public class DetailFragment extends Fragment implements IDetailView {
     @BindView(R.id.image_backdrop)
     ImageView mBackdrop;
 
-    @BindView(R.id.image_poster)
-    ImageView mPoster;
-
-    @BindView(R.id.text_title)
-    TextView mTitleText;
-
-    @BindView(R.id.text_release)
-    TextView mReleaseDateText;
-
-    @BindView(R.id.text_rating)
-    TextView mRatingText;
-
-    @BindView(R.id.text_overview)
-    TextView mOverviewText;
-
-    @BindView(R.id.recycler_view_videos)
-    RecyclerView mRecyclerVideos;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         ButterKnife.bind(this, rootView);
-        DetailsPresenter presenter = new DetailsPresenter(this);
-
-        //setup RecyclerView for videos
-        mVideoAdapter = new VideosAdapter(new ArrayList<Video>(), getActivity());
-        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
-        mRecyclerVideos.setLayoutManager(llm);
-        mRecyclerVideos.setAdapter(mVideoAdapter);
+        mPresenter = new DetailsPresenter(this);
 
         //getMovies args
         if (getArguments() != null) {
             mMovie = getArguments().getParcelable(Utilities.EXTRA_MOVIE);
+            Picasso.with(getActivity()).load(mMovie.getBackdrop_path()).into(mBackdrop);
+            //Setup recycler
+            LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+            mRecycler.setLayoutManager(llm);
+            mAdapter = new DetailAdapter(mMovie, mVideos, mReviews, getActivity());
+            mRecycler.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+            mRecycler.setAdapter(mAdapter);
 
+            //Fetch data
             if (savedInstanceState == null) {
-                presenter.fetchVideos(mMovie.getId());
-                presenter.fetchReviews(mMovie.getId());
+                mPresenter.fetchVideos(mMovie.getId());
+                mPresenter.fetchReviews(mMovie.getId());
             }
 
-            mTitleText.setText(mMovie.getOriginal_title());
-            mReleaseDateText.setText(mMovie.getRelease_date());
-            mRatingText.setText(mMovie.getVote_average());
-            mOverviewText.setText(mMovie.getOverview());
-
-            Picasso.with(getActivity()).load(mMovie.getBackdrop_path()).into(mBackdrop);
-            Picasso.with(getActivity()).load(mMovie.getPoster_path()).into(mPoster);
+            if (savedInstanceState != null) {
+                mVideos = savedInstanceState.getParcelableArrayList("videos");
+                mReviews = savedInstanceState.getParcelableArrayList("reviews");
+                mAdapter.updateReviews(mReviews);
+                mAdapter.updateVideos(mVideos);
+            }
 
 
         }
@@ -96,13 +85,35 @@ public class DetailFragment extends Fragment implements IDetailView {
     }
 
     @Override
-    public void onReviewsReturned(List<Review> reviews) {
+    public void onReviewsReturned(final ArrayList<Review> reviews) {
+        //Set data
+        //Need to run on UI thread since OkHTTP is running in background thread
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mReviews = reviews;
+                    mAdapter.updateReviews(reviews);
+                }
+            });
+        }
         Log.i("WOO", String.valueOf(reviews.size()));
     }
 
     @Override
-    public void onVideosReturned(List<Video> videos) {
-        mVideoAdapter.updateData(videos);
+    public void onVideosReturned(final ArrayList<Video> videos) {
+
+        //Set data
+        //Need to run on UI thread since OkHTTP is running in background thread
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mVideos = videos;
+                    mAdapter.updateVideos(videos);
+                }
+            });
+        }
         Log.i("YEP", String.valueOf(videos.size()));
     }
 
@@ -124,5 +135,13 @@ public class DetailFragment extends Fragment implements IDetailView {
                 break;
         }
         snackbar.show();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelableArrayList("reviews" , mReviews);
+        outState.putParcelableArrayList("videos", mVideos);
     }
 }

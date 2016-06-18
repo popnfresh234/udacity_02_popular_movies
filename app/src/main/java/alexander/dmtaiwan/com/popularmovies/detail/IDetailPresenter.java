@@ -1,6 +1,6 @@
 package alexander.dmtaiwan.com.popularmovies.detail;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import alexander.dmtaiwan.com.popularmovies.model.Review;
 import alexander.dmtaiwan.com.popularmovies.model.Video;
@@ -14,9 +14,9 @@ public interface IDetailPresenter {
 
     void fetchReviews(String id);
 
-    void onReviewsReturned(List<Review> reviews);
+    void onReviewsReturned(ArrayList<Review> reviews);
 
-    void onVideosReturned(List<Video> videos);
+    void onVideosReturned(ArrayList<Video> videos);
 
     void onErrorReturned(int error);
 }

@@ -1,6 +1,6 @@
 package alexander.dmtaiwan.com.popularmovies.detail;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import alexander.dmtaiwan.com.popularmovies.model.Review;
 import alexander.dmtaiwan.com.popularmovies.model.Video;
@@ -9,9 +9,9 @@ import alexander.dmtaiwan.com.popularmovies.model.Video;
  * Created by Alexander on 6/18/2016.
  */
 public interface IDetailView {
-    void onReviewsReturned(List<Review> reviews);
+    void onReviewsReturned(ArrayList<Review> reviews);
 
-    void onVideosReturned(List<Video> videos);
+    void onVideosReturned(ArrayList<Video> videos);
 
     void onErrorReturned(int error);
 }

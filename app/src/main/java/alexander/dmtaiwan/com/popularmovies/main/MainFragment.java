@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import alexander.dmtaiwan.com.popularmovies.R;
 import alexander.dmtaiwan.com.popularmovies.model.Movie;
@@ -35,7 +34,7 @@ public class MainFragment extends Fragment implements IMainView , ImageAdapter.A
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    private List<Movie> mMovies = new ArrayList<Movie>();
+    private ArrayList<Movie> mMovies = new ArrayList<Movie>();
     private ImageAdapter mAdapter;
     private MovieListener listener;
 
@@ -55,6 +54,8 @@ public class MainFragment extends Fragment implements IMainView , ImageAdapter.A
 
         if (savedInstanceState != null) {
             mMovies = savedInstanceState.getParcelableArrayList("TEST");
+            //Reattach listener
+            listener = (MainActivity)getActivity();
         }
 
         //Setup the adapter
@@ -77,7 +78,7 @@ public class MainFragment extends Fragment implements IMainView , ImageAdapter.A
 
 
     @Override
-    public void onDataReturned(final List<Movie> movies) {
+    public void onDataReturned(final ArrayList<Movie> movies) {
         //Set data
         //Need to run on UI thread since OkHTTP is running in background thread
         if (getActivity() != null) {
@@ -125,9 +126,6 @@ public class MainFragment extends Fragment implements IMainView , ImageAdapter.A
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        ArrayList<Movie> movies = new ArrayList<>();
-        movies.addAll(mMovies);
-
-        outState.putParcelableArrayList("TEST", movies);
+        outState.putParcelableArrayList("TEST", mMovies);
     }
 }

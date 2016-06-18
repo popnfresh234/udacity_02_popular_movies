@@ -1,11 +1,9 @@
 package alexander.dmtaiwan.com.popularmovies.detail;
 
-import android.util.Log;
-
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.ArrayList;
 
 import alexander.dmtaiwan.com.popularmovies.model.Review;
 import alexander.dmtaiwan.com.popularmovies.model.Video;
@@ -46,7 +44,7 @@ public class DetailsInteractor implements IDetailInteractor {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                List<Video> videos = null;
+                ArrayList<Video> videos = null;
                 try {
                     videos = JSONParser.parseVidoes(response.body().string());
                 } catch (JSONException e) {
@@ -71,7 +69,7 @@ public class DetailsInteractor implements IDetailInteractor {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                List<Review> reviews = null;
+                ArrayList<Review> reviews = null;
                 try {
                     reviews = JSONParser.parseReviews(response.body().string());
                 } catch (JSONException e) {

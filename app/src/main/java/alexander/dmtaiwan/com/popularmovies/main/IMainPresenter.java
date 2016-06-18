@@ -1,6 +1,6 @@
 package alexander.dmtaiwan.com.popularmovies.main;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import alexander.dmtaiwan.com.popularmovies.model.Movie;
 
@@ -10,7 +10,7 @@ import alexander.dmtaiwan.com.popularmovies.model.Movie;
 public interface IMainPresenter {
     void fetchData(String sortOrder);
 
-    void onDataReturned(List<Movie> movieList);
+    void onDataReturned(ArrayList<Movie> movieList);
 
     void onError(int error);
 }

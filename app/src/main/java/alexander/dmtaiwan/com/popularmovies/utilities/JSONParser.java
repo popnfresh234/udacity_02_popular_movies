@@ -5,7 +5,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import alexander.dmtaiwan.com.popularmovies.model.Movie;
 import alexander.dmtaiwan.com.popularmovies.model.Review;
@@ -35,13 +34,14 @@ public class JSONParser {
 
     //Videos
     private static final String KEY = "key";
+    private static final String NAME = "name";
     private static final String YOUTUBE_THUMB_URL_START = "http://img.youtube.com/vi/";
     private static final String YOUTUBE_THUMB_URL_END = "/0.jpg";
 
-    public static List<Movie> parse(String json) throws JSONException{
+    public static ArrayList<Movie> parse(String json) throws JSONException{
         JSONObject object = new JSONObject(json);
         JSONArray results = object.getJSONArray(RESULTS);
-        List<Movie> movieList = new ArrayList<>();
+        ArrayList<Movie> movieList = new ArrayList<>();
         if (results.length() > 0) {
             for(int i =0; i < results.length(); i++) {
                 JSONObject jsonMovie = results.getJSONObject(i);
@@ -59,15 +59,16 @@ public class JSONParser {
         return movieList;
     }
 
-    public static List<Video> parseVidoes(String json) throws JSONException {
+    public static ArrayList<Video> parseVidoes(String json) throws JSONException {
         JSONObject object = new JSONObject(json);
         JSONArray results = object.getJSONArray(RESULTS);
-        List<Video> videos = new ArrayList<>();
+        ArrayList<Video> videos = new ArrayList<>();
 
         if (results.length() > 0) {
             for(int i = 0; i < results.length(); i ++) {
                 JSONObject jsonVideo = results.getJSONObject(i);
                 Video video = new Video();
+                video.setName(jsonVideo.getString(NAME));
                 video.setKey(jsonVideo.getString(KEY));
                 video.setYoutube_thumb(YOUTUBE_THUMB_URL_START + jsonVideo.getString(KEY) + YOUTUBE_THUMB_URL_END);
                 videos.add(video);
@@ -76,10 +77,10 @@ public class JSONParser {
         return videos;
     }
 
-    public static List<Review> parseReviews(String json) throws JSONException {
+    public static ArrayList<Review> parseReviews(String json) throws JSONException {
         JSONObject object = new JSONObject(json);
         JSONArray results = object.getJSONArray(RESULTS);
-        List<Review> reviews = new ArrayList<>();
+        ArrayList<Review> reviews = new ArrayList<>();
 
         if (results.length() > 0) {
             for(int i = 0; i < results.length(); i ++) {
