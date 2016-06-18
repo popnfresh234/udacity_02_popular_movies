@@ -18,9 +18,15 @@ public class DetailsPresenter implements IDetailPresenter {
         this.detailInteractor = new DetailsInteractor(this);
     }
 
+
     @Override
-    public void fetchData(String id, int code) {
-        detailInteractor.fetchData(id, code);
+    public void fetchVideos(String id) {
+        detailInteractor.fetchVideos(id);
+    }
+
+    @Override
+    public void fetchReviews(String id) {
+        detailInteractor.fetchReviews(id);
     }
 
 

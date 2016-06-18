@@ -10,7 +10,9 @@ import alexander.dmtaiwan.com.popularmovies.model.Video;
  */
 public interface IDetailPresenter {
 
-    void fetchData(String id, int code);
+    void fetchVideos(String id);
+
+    void fetchReviews(String id);
 
     void onReviewsReturned(List<Review> reviews);
 

@@ -35,6 +35,8 @@ public class JSONParser {
 
     //Videos
     private static final String KEY = "key";
+    private static final String YOUTUBE_THUMB_URL_START = "http://img.youtube.com/vi/";
+    private static final String YOUTUBE_THUMB_URL_END = "/0.jpg";
 
     public static List<Movie> parse(String json) throws JSONException{
         JSONObject object = new JSONObject(json);
@@ -67,6 +69,7 @@ public class JSONParser {
                 JSONObject jsonVideo = results.getJSONObject(i);
                 Video video = new Video();
                 video.setKey(jsonVideo.getString(KEY));
+                video.setYoutube_thumb(YOUTUBE_THUMB_URL_START + jsonVideo.getString(KEY) + YOUTUBE_THUMB_URL_END);
                 videos.add(video);
             }
         }

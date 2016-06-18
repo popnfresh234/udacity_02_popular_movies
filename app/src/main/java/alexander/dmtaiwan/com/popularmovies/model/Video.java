@@ -27,6 +27,8 @@ public class Video implements Parcelable {
 
     private String size;
 
+    private String youtube_thumb;
+
     public String getSite() {
         return site;
     }
@@ -91,6 +93,14 @@ public class Video implements Parcelable {
         this.size = size;
     }
 
+    public String getYoutube_thumb() {
+        return youtube_thumb;
+    }
+
+    public void setYoutube_thumb(String youtube_thumb) {
+        this.youtube_thumb = youtube_thumb;
+    }
+
     protected Video(Parcel in) {
         site = in.readString();
         id = in.readString();
@@ -100,6 +110,7 @@ public class Video implements Parcelable {
         key = in.readString();
         iso_3166_1 = in.readString();
         size = in.readString();
+        youtube_thumb = in.readString();
     }
 
     @Override
@@ -117,6 +128,7 @@ public class Video implements Parcelable {
         dest.writeString(key);
         dest.writeString(iso_3166_1);
         dest.writeString(size);
+        dest.writeString(youtube_thumb);
     }
 
     @SuppressWarnings("unused")
