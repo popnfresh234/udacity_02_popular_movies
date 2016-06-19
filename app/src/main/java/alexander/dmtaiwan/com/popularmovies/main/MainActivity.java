@@ -3,7 +3,10 @@ package alexander.dmtaiwan.com.popularmovies.main;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.widget.FrameLayout;
 
 import alexander.dmtaiwan.com.popularmovies.R;
@@ -23,11 +26,19 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Movi
     @BindView(R.id.detail_container)
     FrameLayout mContainer;
 
+    @BindView(R.id.coordinator_layout)
+    CoordinatorLayout mCoordinatorLayout;
+
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        setSupportActionBar(mToolbar);
 
         if (mContainer != null) {
             //Container is not null, device is using tablet layout
@@ -60,6 +71,26 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Movi
     @Override
     public void createFragment(Movie movie) {
         replaceFragment(movie);
+    }
+
+    @Override
+    public void onError(int error) {
+        Snackbar snackbar;
+        switch (error) {
+            case Utilities.ERROR_NETWORK_UNAVAILABLE:
+                snackbar = Snackbar.make(mCoordinatorLayout, getString(R.string.error_network_unavailable), Snackbar.LENGTH_LONG);
+                break;
+            case Utilities.ERROR_NETWORK_FAILED:
+                snackbar = Snackbar.make(mCoordinatorLayout, getString(R.string.error_network_failed), Snackbar.LENGTH_LONG);
+                break;
+            case Utilities.ERROR_JSON:
+                snackbar = Snackbar.make(mCoordinatorLayout, getString(R.string.error_json), Snackbar.LENGTH_LONG);
+                break;
+            default:
+                snackbar = Snackbar.make(mCoordinatorLayout, "WEEEEEEEEEEEEE", Snackbar.LENGTH_LONG);
+                break;
+        }
+        snackbar.show();
     }
 
     private void replaceFragment(Movie movie) {

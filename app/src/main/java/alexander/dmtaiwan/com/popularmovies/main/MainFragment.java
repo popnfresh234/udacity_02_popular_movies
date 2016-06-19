@@ -5,11 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -35,14 +31,12 @@ public class MainFragment extends Fragment implements IMainView , ImageAdapter.A
 
     public static final String OUTSTATE_MOVIES = "outstate_movies";
 
-    @BindView(R.id.coordinator_layout)
-    CoordinatorLayout mCoordinatorLayout;
+
 
     @BindView(R.id.gridview)
     GridView mGridView;
 
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
+
 
     private ArrayList<Movie> mMovies = new ArrayList<Movie>();
     private ImageAdapter mAdapter;
@@ -70,7 +64,7 @@ public class MainFragment extends Fragment implements IMainView , ImageAdapter.A
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, rootView);
         setHasOptionsMenu(true);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(mToolbar);
+
 
         if (savedInstanceState != null) {
             mMovies = savedInstanceState.getParcelableArrayList(OUTSTATE_MOVIES);
@@ -144,22 +138,7 @@ public class MainFragment extends Fragment implements IMainView , ImageAdapter.A
 
     @Override
     public void onError(int error) {
-        Snackbar snackbar;
-        switch (error) {
-            case Utilities.ERROR_NETWORK_UNAVAILABLE:
-                snackbar = Snackbar.make(mCoordinatorLayout, getString(R.string.error_network_unavailable), Snackbar.LENGTH_LONG);
-                break;
-            case Utilities.ERROR_NETWORK_FAILED:
-                snackbar = Snackbar.make(mCoordinatorLayout, getString(R.string.error_network_failed), Snackbar.LENGTH_LONG);
-                break;
-            case Utilities.ERROR_JSON:
-                snackbar = Snackbar.make(mCoordinatorLayout, getString(R.string.error_json), Snackbar.LENGTH_LONG);
-                break;
-            default:
-                snackbar = Snackbar.make(mCoordinatorLayout, "WEEEEEEEEEEEEE", Snackbar.LENGTH_LONG);
-                break;
-        }
-        snackbar.show();
+
     }
 
     @Override
@@ -190,6 +169,8 @@ public class MainFragment extends Fragment implements IMainView , ImageAdapter.A
         void onItemSelected(Movie movie);
         //Creates fragment
         void createFragment(Movie movie);
+        //Handle errors
+        void onError(int error);
     }
 
 
