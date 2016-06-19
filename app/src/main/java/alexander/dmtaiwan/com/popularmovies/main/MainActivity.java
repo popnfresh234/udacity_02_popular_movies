@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements MainFragment.MovieListener {
 
-    private boolean mTwoPane;
+    private boolean mTwoPane = false;
 
 
     @Nullable
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Movi
         if (mContainer != null) {
             //Container is not null, device is using tablet layout
             mTwoPane = true;
-        } else mTwoPane = false;
+        }
         //Inflate main fragment with MainActivity as listener
         if (savedInstanceState == null) {
 
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Movi
     private void replaceFragment(Movie movie) {
         Bundle args = new Bundle();
         args.putParcelable(Utilities.EXTRA_MOVIE, movie);
-        DetailFragment detailFragment = new DetailFragment();
+        DetailFragment detailFragment = DetailFragment.newInstance(this, mTwoPane);
         detailFragment.setArguments(args);
         getSupportFragmentManager()
                 .beginTransaction()

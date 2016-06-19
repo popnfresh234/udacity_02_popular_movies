@@ -32,7 +32,6 @@ public class DetailActivity extends AppCompatActivity {
                     .beginTransaction()
                     .replace(R.id.detail_container, fragment)
                     .commit();
-
         }
     }
 }

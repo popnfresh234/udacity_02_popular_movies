@@ -138,7 +138,7 @@ public class MainFragment extends Fragment implements IMainView , ImageAdapter.A
 
     @Override
     public void onError(int error) {
-
+        listener.onError(error);
     }
 
     @Override
