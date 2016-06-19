@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.FrameLayout;
 
 import alexander.dmtaiwan.com.popularmovies.R;
@@ -30,30 +29,20 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Movi
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        if (mContainer != null) {
+            //Container is not null, device is using tablet layout
+            mTwoPane = true;
+        } else mTwoPane = false;
         //Inflate main fragment with MainActivity as listener
         if (savedInstanceState == null) {
 
-            MainFragment mainFragment = MainFragment.newInstance(this);
+            MainFragment mainFragment = MainFragment.newInstance(this, mTwoPane);
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.main_container, mainFragment, null)
                     .commit();
         }
 
-        if (mContainer != null) {
-            //Container is not null, device is using tablet layout
-            mTwoPane = true;
-            if (savedInstanceState == null) {
-                //If this is the first time running the app, create and inflate a detail fragment
-                DetailFragment detailFragment = new DetailFragment();
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.detail_container, detailFragment, null)
-                        .commit();
-            }
-        }else{
-            Log.i("SINGLE", "single");
-        }
 
     }
 
@@ -63,6 +52,24 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Movi
             Intent intent = new Intent(this, DetailActivity.class);
             intent.putExtra(Utilities.EXTRA_MOVIE, movie);
             startActivity(intent);
+        }else{
+            replaceFragment(movie);
         }
+    }
+
+    @Override
+    public void createFragment(Movie movie) {
+        replaceFragment(movie);
+    }
+
+    private void replaceFragment(Movie movie) {
+        Bundle args = new Bundle();
+        args.putParcelable(Utilities.EXTRA_MOVIE, movie);
+        DetailFragment detailFragment = new DetailFragment();
+        detailFragment.setArguments(args);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.detail_container, detailFragment, null)
+                .commit();
     }
 }

@@ -47,11 +47,13 @@ public class MainFragment extends Fragment implements IMainView , ImageAdapter.A
     private ArrayList<Movie> mMovies = new ArrayList<Movie>();
     private ImageAdapter mAdapter;
     private MovieListener listener;
+    private boolean mTwoPane;
     private MainPresenter mPresenter;
 
-    public static MainFragment newInstance(MovieListener listener) {
+    public static MainFragment newInstance(MovieListener listener, boolean twoPane) {
         MainFragment fragment = new MainFragment();
         fragment.listener = listener;
+        fragment.mTwoPane = twoPane;
         return fragment;
     }
 
@@ -129,6 +131,10 @@ public class MainFragment extends Fragment implements IMainView , ImageAdapter.A
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    //if two pane notify MainActivity to attach a DetailFragment
+                    if (mTwoPane) {
+                        listener.createFragment(movies.get(0));
+                    }
                     mMovies = movies;
                     mAdapter.updateData(movies);
                 }
@@ -180,8 +186,13 @@ public class MainFragment extends Fragment implements IMainView , ImageAdapter.A
 
     //Interface for MainActivity to implement
     public interface MovieListener {
+        //Handles click
         void onItemSelected(Movie movie);
+        //Creates fragment
+        void createFragment(Movie movie);
     }
+
+
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
