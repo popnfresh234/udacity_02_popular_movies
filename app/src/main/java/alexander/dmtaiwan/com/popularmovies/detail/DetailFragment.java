@@ -7,7 +7,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +29,9 @@ import butterknife.ButterKnife;
  * Created by lenovo on 6/16/2016.
  */
 public class DetailFragment extends Fragment implements IDetailView {
+    private static final String OUTSTATE_VIDEOS = "outstate_videos";
+    private static final String OUTSTATE_REVIEWS = "outstate_reviews";
+
     private Movie mMovie;
     private ArrayList<Video> mVideos = new ArrayList<>();
     private ArrayList<Review> mReviews = new ArrayList<>();
@@ -58,6 +60,7 @@ public class DetailFragment extends Fragment implements IDetailView {
         if (getArguments() != null) {
             mMovie = getArguments().getParcelable(Utilities.EXTRA_MOVIE);
             Picasso.with(getActivity()).load(mMovie.getBackdrop_path()).into(mBackdrop);
+
             //Setup recycler
             LinearLayoutManager llm = new LinearLayoutManager(getActivity());
             mRecycler.setLayoutManager(llm);
@@ -65,20 +68,19 @@ public class DetailFragment extends Fragment implements IDetailView {
             mRecycler.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
             mRecycler.setAdapter(mAdapter);
 
-            //Fetch data
+            //Fetch data if new fragment
             if (savedInstanceState == null) {
                 mPresenter.fetchVideos(mMovie.getId());
                 mPresenter.fetchReviews(mMovie.getId());
             }
 
+            //Restore state if resuming fragment
             if (savedInstanceState != null) {
-                mVideos = savedInstanceState.getParcelableArrayList("videos");
-                mReviews = savedInstanceState.getParcelableArrayList("reviews");
+                mVideos = savedInstanceState.getParcelableArrayList(OUTSTATE_VIDEOS);
+                mReviews = savedInstanceState.getParcelableArrayList(OUTSTATE_REVIEWS);
                 mAdapter.updateReviews(mReviews);
                 mAdapter.updateVideos(mVideos);
             }
-
-
         }
 
         return rootView;
@@ -97,7 +99,6 @@ public class DetailFragment extends Fragment implements IDetailView {
                 }
             });
         }
-        Log.i("WOO", String.valueOf(reviews.size()));
     }
 
     @Override
@@ -114,7 +115,6 @@ public class DetailFragment extends Fragment implements IDetailView {
                 }
             });
         }
-        Log.i("YEP", String.valueOf(videos.size()));
     }
 
     @Override
@@ -140,8 +140,7 @@ public class DetailFragment extends Fragment implements IDetailView {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
-        outState.putParcelableArrayList("reviews" , mReviews);
-        outState.putParcelableArrayList("videos", mVideos);
+        outState.putParcelableArrayList(OUTSTATE_REVIEWS , mReviews);
+        outState.putParcelableArrayList(OUTSTATE_VIDEOS, mVideos);
     }
 }

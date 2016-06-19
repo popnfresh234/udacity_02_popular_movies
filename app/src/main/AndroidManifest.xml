@@ -21,6 +21,10 @@
 
         <activity android:name=".detail.DetailActivity"
             android:theme="@style/TransulcentTheme"/>
+
+        <activity android:name=".SettingsActivity"/>
+
+
     </application>
 
 </manifest>

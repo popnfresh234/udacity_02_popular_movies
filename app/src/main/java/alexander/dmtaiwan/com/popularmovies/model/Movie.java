@@ -20,6 +20,7 @@ public class Movie implements Parcelable {
     private String poster_path;
     private String video;
     private String popularity;
+    private boolean isFavorite;
 
     public Movie() {
         //Empty constructor
@@ -75,6 +76,14 @@ public class Movie implements Parcelable {
 
     public String getOriginal_language() {
         return original_language;
+    }
+
+    public boolean getIsFavorite() {
+        return isFavorite;
+    }
+
+    public void setIsFavorite(Boolean isFavorite) {
+        this.isFavorite = isFavorite;
     }
 
     public void setOriginal_language(String original_language) {
@@ -144,6 +153,8 @@ public class Movie implements Parcelable {
         poster_path = in.readString();
         video = in.readString();
         popularity = in.readString();
+        isFavorite = in.readByte() != 0x00;
+
     }
 
     @Override
@@ -166,6 +177,7 @@ public class Movie implements Parcelable {
         dest.writeString(poster_path);
         dest.writeString(video);
         dest.writeString(popularity);
+        dest.writeByte((byte) (isFavorite ? 0x01 : 0x00));
     }
 
     @SuppressWarnings("unused")

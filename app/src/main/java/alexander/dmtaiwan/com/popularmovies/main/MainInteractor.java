@@ -31,7 +31,7 @@ public class MainInteractor implements IMainInteractor {
 
     @Override
     public void fetchData(String sortOrder) {
-        Request request = RequestGenerator.getMovies();
+        Request request = RequestGenerator.getMovies(sortOrder);
         OkHttpClient client = HttpClientFactory.getClient();
         client.newCall(request).enqueue(new Callback() {
             @Override

@@ -4,10 +4,23 @@
     <string name="rating_prefix">Rating:&#160;</string>
     <string name="release_date_prefix">Released:&#160;</string>
 
+    <string name="action_settings">Settings</string>
+
     <!--Errors-->
     <string name="error_network_unavailable">No network available</string>
     <string name="error_network_failed">Something went wrong with the request!</string>
     <string name="error_json">Something is wrong with the data!</string>
 
+    <!--Preferences-->
+    <string name="pref_title_sort">Sort Options</string>
+    <string name="pref_key_sort">sort</string>
+
+    <string name="pref_sort_top_rated">top_rated</string>
+    <string name="pref_sort_popular">popular</string>
+    <string name="pref_sort_favorites">favorites</string>
+
+    <string name="pref_sort_top_rated_label">Top Rated</string>
+    <string name="pref_sort_popular_label">Popular</string>
+    <string name="pref_sort_favorites_label">Favorites</string>
 
 </resources>
