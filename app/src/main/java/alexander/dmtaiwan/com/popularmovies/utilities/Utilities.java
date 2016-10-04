@@ -9,7 +9,6 @@ import android.net.NetworkInfo;
  */
 public class Utilities {
     public static final String EXTRA_MOVIE = "com.dmtaiwan.alexander.extra.movie";
-    public static final String API_KEY = "02134457e3479763fd29902a1e1235c3";
 
     public static final int REVIEW_CODE = 0;
     public static final int VIDEO_CODE = 1;

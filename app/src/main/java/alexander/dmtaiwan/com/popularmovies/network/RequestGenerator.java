@@ -2,7 +2,7 @@ package alexander.dmtaiwan.com.popularmovies.network;
 
 import android.support.annotation.NonNull;
 
-import alexander.dmtaiwan.com.popularmovies.utilities.Utilities;
+import alexander.dmtaiwan.com.popularmovies.BuildConfig;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 
@@ -37,7 +37,7 @@ public class RequestGenerator {
                 .addPathSegment(PATH_0)
                 .addPathSegment(PATH_1)
                 .addPathSegment(sortOrder)
-                .addQueryParameter("api_key", Utilities.API_KEY)
+                .addQueryParameter("api_key", BuildConfig.API_KEY)
                 .build();
         Request.Builder builder = new Request.Builder().url(url);
         return builder.build();
@@ -51,7 +51,7 @@ public class RequestGenerator {
                 .addPathSegment(PATH_1)
                 .addPathSegment(id)
                 .addPathSegment(PATH_VIDEOS)
-                .addQueryParameter(QUERY_PARAM_API_KEY, Utilities.API_KEY)
+                .addQueryParameter(QUERY_PARAM_API_KEY, BuildConfig.API_KEY)
                 .build();
         Request.Builder builder = new Request.Builder().url(url);
         return builder.build();
@@ -65,7 +65,7 @@ public class RequestGenerator {
                 .addPathSegment(PATH_1)
                 .addPathSegment(id)
                 .addPathSegment(PATH_REVIEWS)
-                .addQueryParameter(QUERY_PARAM_API_KEY, Utilities.API_KEY)
+                .addQueryParameter(QUERY_PARAM_API_KEY, BuildConfig.API_KEY)
                 .build();
         Request.Builder builder = new Request.Builder().url(url);
         return builder.build();
